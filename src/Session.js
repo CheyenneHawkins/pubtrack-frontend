@@ -8,6 +8,7 @@ import SessionToolDrawer from './SessionToolDrawer'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import spade from './images/spade.png';
+import forward from './images/forward.png';
 import confirm from './images/confirm.svg';
 import cancel from './images/cancel.svg';
 
@@ -16,7 +17,7 @@ export default function Session() {
 
     const [scratchPadShow, setScratchPadShow] = useState('scratchpad-collapsed')
 
-    const [toolDrawerOpen, setToolDrawerOpen] = React.useState(false);
+    const [toolDrawerOpen, setToolDrawerOpen] = React.useState(true);
 
     const [songTitle, setSongTitle] = React.useState('Untitled');
     const [songTitleInput, setSongTitleInput] = React.useState(songTitle);
@@ -39,7 +40,9 @@ export default function Session() {
       className={`session-tool-drawer-button ${toolDrawerOpen ? 'toolbar-open' : 'toolbar-closed'}`}
       >
         <span className='vertical-text'>
-        <img src={spade} alt='Session Tools' />
+        {!toolDrawerOpen && <img src={spade} alt='Session Tools' />}
+        {toolDrawerOpen && <img src={forward} alt='close Session Tools' height={20} className='session-tools-close-button'/>}
+        
         </span>
     </button>
     <div className='session-container'>

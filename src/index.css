@@ -246,7 +246,7 @@ cursor: pointer;
 }
 
 .session-footer-bar {
-  background-color: grey;
+  background-color: #303030;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -255,7 +255,9 @@ cursor: pointer;
   bottom: 0px !important;
   z-index: 50;
 }
-
+.session-footer-bar-player {
+  opacity: .3;
+}
 
 /* header */
 .css-1bfesyr-MuiPaper-root-MuiDrawer-paper {
@@ -285,9 +287,16 @@ cursor: pointer;
 
 /* Tool Drawer Header */
 .css-fiov70 {
-  height: 69px !important;
+  height: 75px !important;
   display: flex !important;
   justify-content: center !important;
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none; 
+   -khtml-user-select: none; 
+     -moz-user-select: none; 
+      -ms-user-select: none; 
+          user-select: none; 
+  border-bottom: #262626 solid 2px !important;
 }
 .css-fiov70 button {
   margin-right: 10px !important;
@@ -315,7 +324,7 @@ cursor: pointer;
 
 .text-field-search-row {
   display: flex;
-  gap: 10px;
+  /* gap: 10px !important; */
   margin-top: 9px !important;
   margin-bottom: 10px;
 }
@@ -385,6 +394,10 @@ cursor: pointer;
   height: 100%;
   justify-content: center;
   align-items: flex-start;
+}
+
+.css-jcwuwq-MuiButtonBase-root-MuiButton-root {
+  margin-left: 16px !important;
 }
 
 .search-history-crumbs {
@@ -554,9 +567,13 @@ ul.urban-results-list {
   text-orientation: upright !important;
   cursor:  pointer !important;
   z-index: 200;
+  border-radius: 0px !important;
+  /* border: none !important; */
   /* transform: rotate(-90deg); */
 }
 
+img.session-tools-close-button {
+}
 
 .session-tool-drawer-button .vertical-text{
   text-orientation:upright !important;
