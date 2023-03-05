@@ -1,4 +1,4 @@
-import player from './images/player-temp.png';
+import player from '../images/player-temp.png';
 
 export default function SessionFooterBar() {
 

@@ -1,12 +1,12 @@
-import './App.css';
+import '../App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes } from 'react-router-dom';
 
 import Header from './Header';
-import pubTheme from './theme';
+import pubTheme from '../theme';
 
-import './custom.css'
+import '../custom.css'
 import Dashboard from './Dashboard';
 import Session from './Session';
 import MenuDrawer from './MenuDrawer';

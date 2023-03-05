@@ -14,9 +14,9 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
-import speaker from './images/speaker.png';
+import speaker from '../images/speaker.png';
 
-import globe from './images/globe.png';
+import globe from '../images/globe.png';
 
 
 // const pages = ['Dashboard', 'New Session', 'Catalog'];

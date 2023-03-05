@@ -6,16 +6,11 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
-import search from './images/search.svg'
-import cancel from './images/cancel.svg'
-
+import search from '../images/search.svg'
 import axios from 'axios';
 import { useEffect } from 'react';
-import { Divider } from '@mui/material';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -53,132 +48,128 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-export default function ToolSectionUrbanDict() {
+export default function ToolSectionRhymes() {
   const [expanded, setExpanded] = React.useState('panel1');
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : true);
   };
 
-  const [urbansInput, setUrbansInput] = React.useState('');
-  const [urbansResults, setUrbansResults] = React.useState([]);
-  const [urbansDisplay, setUrbansDisplay] = React.useState(urbansResults);
-  const [urbansCrumb, setUrbansCrumb] = React.useState('');
+  const [rhymesInput, setRhymesInput] = React.useState('');
+  const [rhymesResults, setRhymesResults] = React.useState([]);
+  const [rhymesDisplay, setRhymesDisplay] = React.useState(rhymesResults);
+  const [rhymesCrumb, setRhymesCrumb] = React.useState('');
   const [paneStyle, setPaneStyle] = React.useState('limited');
-  const [urbanOptions, setUrbanOptions] = React.useState('');
-  const [urbanType, setUrbanType] = React.useState('rhy');
+  const [rhymeOptions, setRhymeOptions] = React.useState('');
+  const [rhymeType, setRhymeType] = React.useState('rhy');
 
   function valuetext(value) {
     return value
   }
 
-  function getUrbansResults(searchterm) {
-    axios.get(`https://api.urbandictionary.com/v0/define?term=${searchterm}`)
+  function getrhymesResults(searchterm) {
+    axios.get(`https://api.datamuse.com/words?rel_${rhymeType}=${searchterm}`)
     .then((res) => {
-      console.log(res);
-      const urbansRaw = []
+      const rhymesRaw = []
 
       //add results to array
-      res.data.list.map(item => {
-        return urbansRaw.push(item)
+      res.data.map(item => {
+        return rhymesRaw.push(item)
       })
 
       //sort results by score
-      // urbansRaw.sort((a, b) => {
-      //   return b.score - a.score
-      // })
+      rhymesRaw.sort((a, b) => {
+        return b.score - a.score
+      })
 
-      const urbansList = []
-      urbansRaw.map(item => {
-        return urbansList.push(item.definition)
+      const rhymesList = []
+      rhymesRaw.map(item => {
+        return rhymesList.push(item.word)
       })
 
       //add sorted results to state
-      setUrbansResults(urbansList.length > 0 ? urbansList : ['No Results Found'])
-      // setUrbansResults(urbansList)
+      setRhymesResults(rhymesList.length > 0 ? rhymesList : ['No Results Found'])
+      // setRhymesResults(rhymesList)
       //set the search term display in header
-      setUrbansCrumb(searchterm)
+      setRhymesCrumb(searchterm)
 
       })
     }
-    //clears the urbans results list
-  function clearurbansResults() {
-    const urbansList = []
-    setUrbansResults([])
-    setUrbanOptions('')
-    setUrbanType('rhy')
+    //clears the rhymes results list
+  function clearrhymesResults() {
+    const rhymesList = []
+    setRhymesResults([])
+    setRhymeOptions('')
+    setRhymeType('rhy')
     }
 
     //clicking on a word in the results list refreshes search with that word
-  function clickUrbanWord(word) {
-    getUrbansResults(word)
-    setUrbansInput(word)
-    const pane = document.getElementById('urbans-tool-pane')
+  function clickRhymeWord(word) {
+    getrhymesResults(word)
+    setRhymesInput(word)
+    const pane = document.getElementById('rhymes-tool-pane')
 
     // too jumpy when moving slider
     pane.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  //advanced urban slider 
-  function handleUrbanType(e) {
-    const currentType = (urbanType === 'rhy') ? 1 : 2
+  //advanced rhyme slider 
+  function handleRhymeType(e) {
+    const currentType = (rhymeType === 'rhy') ? 1 : 2
     if (e.target.value !== currentType) {
       const newType = (e.target.value === 1? 'rhy' : 'nry')
-      setUrbanType(newType)
+      setRhymeType(newType)
       // console.log('VALUE:' + e.target.value)
       // console.log('CURRENT:' + currentType)
     }
   }
 
-  //populates the urban pane when state is updated
+  //populates the rhyme pane when state is updated
   useEffect(() => {
-    const urbansList = 
-    urbansResults.length > 0 
-    ? urbansResults.map((item, index) => {
-      if (index < 30) {
-        // console.log(item)
-        const cleanup1 = item.replace(/\[/g, "");
-        const cleanup2 = cleanup1.replace(/\]/g, "");
-        return <>
-          <li key={index} ><span className='urban-word-link' >{cleanup2}</span></li>
-          <br/>
-          <Divider/>
-          <br/>
-        </>
+    const rhymesList = 
+    rhymesResults.length > 0 
+    ? rhymesResults.map((item, index) => {
+      if (index < 150) {
+        return <li key={index} ><span className='rhyme-word-link' onClick={()=>{
+          clickRhymeWord(item)
+        }}>{item}</span></li>
       }
     }) 
     : ''
-    setUrbansDisplay(urbansList)
-  }, [urbansResults])
+    setRhymesDisplay(rhymesList)
+  }, [rhymesResults])
 
-  //refreshes search when urban type is changed
+  //refreshes search when rhyme type is changed
   useEffect(() => {
-    if (urbansInput !== '') {
-      getUrbansResults(urbansInput)
+    if (rhymesInput !== '') {
+      getrhymesResults(rhymesInput)
     }
-  },[urbanType])
+  },[rhymeType])
     
     return (
-      <div className= {`urbans-tool-pane ${paneStyle}`} id='urbans-tool-pane'>
+      <div className= {`rhymes-tool-pane ${paneStyle}`} id='rhymes-tool-pane'>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Urban Dictionary</Typography>
-          {(urbansDisplay !== '' && expanded === 'panel1') && 
+          <Typography>Rhymes</Typography>
+          {(rhymesDisplay !== '' && expanded === 'panel1') && 
           <span className='search-result-header-label'>
-          {urbansCrumb}
+            <span className='rhyme-result-type-label'>
+              {rhymeType !== 'rhy' && '(loose)'}
+            </span>
+          {rhymesCrumb}
           </span>
           }
         </AccordionSummary>
         <AccordionDetails >
         <div 
           className="text-field-search-row"
-          id='urbans'
+          id='rhymes'
         >
           <form 
             className='tool-drawer-form'
             onSubmit={(e) => {
               e.preventDefault()
-              getUrbansResults(urbansInput)
+              getrhymesResults(rhymesInput)
             }}
           >
             <TextField 
@@ -186,7 +177,7 @@ export default function ToolSectionUrbanDict() {
               label="Search" 
               id="fullWidth" 
               onChange={(e) => {
-                setUrbansInput(e.target.value)
+                setRhymesInput(e.target.value)
               }}
             />
             <Button 
@@ -195,23 +186,48 @@ export default function ToolSectionUrbanDict() {
               color="primary" 
               onClick={(e) => {
                 e.preventDefault()
-                getUrbansResults(urbansInput)
+                getrhymesResults(rhymesInput)
               }}
             >
               <img src={search} alt="search" height={25} />
             </Button>
-            {/* <button onClick={() => {console.log(urbansResults)}}>S</button> */}
+            {/* <button onClick={() => {console.log(rhymesResults)}}>S</button> */}
+            <button type='button' onClick={() => {
+              clearrhymesResults()
+              }}>clear</button>
           </form>
         </div>
           <div className='tool-results-container'>
-          {/* <div className='clear-search-button'>
-            <button type='button' onClick={() => {
-              clearurbansResults()
-              }}>clear
-            </button>
-          </div> */}
-            <ul className='urban-results-list' id='urbansresultslist'>
-              {urbansDisplay}
+          <Button 
+              type="submit"
+              variant="outlined" 
+              fullWidth 
+              color="primary" 
+              onClick={(e) => {
+                setRhymeOptions(rhymeOptions === '' ? 'show' : '')
+              }}
+            >
+            ADVANCED
+            </Button>
+            <div className={`rhymes-options ${rhymeOptions}`}>
+            <span className='rhyme-type-label'>Strict</span>
+              <Slider
+                sx={{
+                  width: 150,
+                }}
+                defaultValue={1}
+                getAriaValueText={valuetext}
+                value={rhymeType === 'rhy'? 1 : 2}
+                // valueLabelDisplay="auto"
+                onChange={(e) => handleRhymeType(e)}
+                marks
+                min={1}
+                max={2}
+              />
+            <span className='rhyme-type-label'>Loose</span>
+            </div>
+            <ul className='rhymes-results-list' id='rhymesresultslist'>
+              {rhymesDisplay}
             </ul>
 
           </div>

@@ -7,10 +7,10 @@ import SessionToolDrawer from './SessionToolDrawer'
 // import DraggableDiv from './DraggableDiv'
 import { Button } from '@mui/material'
 import TextField from '@mui/material/TextField';
-import spade from './images/spade.png';
-import forward from './images/forward.png';
-import confirm from './images/confirm.svg';
-import cancel from './images/cancel.svg';
+import spade from '../images/spade.png';
+import forward from '../images/forward.png';
+import confirm from '../images/confirm.svg';
+import cancel from '../images/cancel.svg';
 
 
 export default function Session() {

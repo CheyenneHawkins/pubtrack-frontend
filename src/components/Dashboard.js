@@ -1,6 +1,7 @@
 import { Box, Typography, useTheme, colors } from "@mui/material";
 import MusicPlayer from "./MusicPlayer";
 import SessionFooterBar from "./SessionFooterBar";
+import '../styles/App.scss';
 
 export default function Dashboard(){
 

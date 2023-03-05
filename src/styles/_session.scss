@@ -1,0 +1,110 @@
+/* SESSION */
+
+.session-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 100px;
+    grid-template-areas:
+    "session"
+    "session-footer-container";
+    height: calc(100vh - 69px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  .session {
+    overflow-x: hidden;
+    margin: 0px;
+    padding: 0px 0px 0px 0px;
+    display: grid;
+    /* height: 100%; */
+  }
+  
+  .session button.song-title-button{
+    background-color: transparent;
+    border: 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  /* Song Title field */
+  .song-title-container {
+    height: 98px;
+    display: flex;
+  }
+  /* Song title input field */
+  .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    /* width: 600px !important; */
+  }
+  
+  .session .css-pis9hk-MuiInputBase-root-MuiInput-root {
+    display: block;
+    font-size: 2em;
+  
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    color: white !important;
+    opacity: 1 !important;
+  }
+  /* Song title placeholder */
+  .session .css-pis9hk-MuiInputBase-root-MuiInput-root::placeholder {
+    color: white !important;
+    opacity: 1 !important;
+  }
+  /* Song title field active underline */
+  .css-pis9hk-MuiInputBase-root-MuiInput-root:after {
+    border-bottom: 2px solid #565656 !important;
+  }
+  
+  button.song-title-field-button {
+  background: none;
+  border: 0;
+  margin: 0px 5px;
+  cursor: pointer;
+  }
+  
+  #confirm-button:hover svg {
+    /* color: green !important; */
+  }
+  
+  .session::-webkit-scrollbar{
+    display: none;
+  }
+  
+  .session-footer-container {
+    position: absolute;
+    bottom: 0px;
+  
+  }
+  
+  .session-footer-bar {
+    background-color: #303030;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    position: absolute;
+    bottom: 0px !important;
+    z-index: 50;
+  }
+  .session-footer-bar-player {
+    opacity: .3;
+  }
+  
+  /* header */
+  .css-1bfesyr-MuiPaper-root-MuiDrawer-paper {
+    z-index: -7 !important;
+  }
+  
+  .header-logo {
+    margin-right: 15px;
+  }
+  
+  /* footer */
+  .css-1bfesyr-MuiPaper-root-MuiDrawer-paper {
+    z-index: 0 !important;
+  }
+  
+  

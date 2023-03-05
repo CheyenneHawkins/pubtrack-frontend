@@ -5,10 +5,10 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import droparrowsquare from './images/drop-arrow-square.png';
+import droparrowsquare from '../images/drop-arrow-square.png';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import robot from './images/robot.png';
+import robot from '../images/robot.png';
 import { InputBase } from '@mui/material';
 
 const Accordion = styled((props) => (

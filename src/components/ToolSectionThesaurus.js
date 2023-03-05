@@ -7,10 +7,10 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import search from './images/search.svg'
-import back from './images/back.png'
-import forward from './images/forward.png'
-import cancel from './images/cancel.svg'
+import search from '../images/search.svg'
+import back from '../images/back.png'
+import forward from '../images/forward.png'
+import cancel from '../images/cancel.svg'
 import axios from 'axios';
 import { useEffect } from 'react';
 
