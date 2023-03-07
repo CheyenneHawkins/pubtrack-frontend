@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
+import {UserContext} from "../context/UserContext";
+
 import LiveTextEditor from './LiveTextEditor'
 import LiveTextEditorV2 from './LiveTextEditorV2'
 import SessionFooterBar from './SessionFooterBar'
@@ -15,6 +17,9 @@ import cancel from '../images/cancel.svg';
 
 export default function Session() {
 
+    const { user, setUser } = useContext(UserContext)
+
+
     const [scratchPadShow, setScratchPadShow] = useState('scratchpad-collapsed')
 
     const [toolDrawerOpen, setToolDrawerOpen] = React.useState(true);
@@ -22,6 +27,8 @@ export default function Session() {
     const [songTitle, setSongTitle] = React.useState('Untitled');
     const [songTitleInput, setSongTitleInput] = React.useState(songTitle);
     const [songTitleStatus, setSongTitleStatus] = React.useState('read');
+
+    const songTitleRef = useRef(null);
 
     const handleToolDrawerOpen = () => {
       toolDrawerOpen === false ? setToolDrawerOpen(true) : setToolDrawerOpen(false);
@@ -31,6 +38,15 @@ export default function Session() {
     function toggleScratchPad() {
         setScratchPadShow(scratchPadShow ==='scratchpad-collapsed'?'scratchpad-expanded' :'scratchpad-collapsed')
     }
+
+    useEffect(() => {
+        if (songTitleStatus === 'edit') {
+            songTitleRef.current.children[0]?.children[0]?.focus();
+            if (songTitleRef.current.children[0]?.children[0].value === 'Untitled') {
+                songTitleRef.current.children[0].children[0].select()
+            }
+        }
+    }, [songTitleStatus])
 
     return (
     <>
@@ -54,8 +70,8 @@ export default function Session() {
                         <button 
                             type='button' 
                             className='song-title-button' 
-                            onClick={()=>{
-                                setSongTitleStatus('edit')
+                            onClick={()=> {
+                                setSongTitleStatus('edit');
                             }
                             }
                         >
@@ -67,9 +83,23 @@ export default function Session() {
                             placeholder={songTitle}
                             variant="standard"
                             value={songTitleInput}
+                            ref={songTitleRef}
                             onChange={(e) => {
                                 setSongTitleInput(e.target.value)
                             }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    setSongTitle(songTitleInput)
+                                    setSongTitleStatus('read')
+                                }
+                                if (e.key === 'Escape') {
+                                    e.preventDefault();
+                                    setSongTitleStatus('read')
+                                    setSongTitleInput(songTitle)
+                                }
+                            }}
+
                         />
                         <button 
                             type='button' 
@@ -101,6 +131,7 @@ export default function Session() {
 
                     <LiveTextEditor placeholder='THIS IS FOR EVERYONE'/>
                 </div>
+                <h1>{user}</h1>
                 <div className='scratch-editor-container'>
                     <Button 
                         onClick={toggleScratchPad}

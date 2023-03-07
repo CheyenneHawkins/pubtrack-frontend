@@ -3,13 +3,17 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes } from 'react-router-dom';
 
-import Header from './Header';
 import pubTheme from '../theme';
 
 import '../custom.css'
+
+import {UserContext} from '../context/UserContext';
+import Header from './Header';
 import Dashboard from './Dashboard';
 import Session from './Session';
 import MenuDrawer from './MenuDrawer';
+import { useMemo, useState } from 'react';
+import Login from './Login';
 
 const darkTheme = createTheme({
   palette: {
@@ -18,7 +22,12 @@ const darkTheme = createTheme({
   },
 });
 
+
 function App() {
+  
+  const [user, setUser] = useState(null)
+  // const providerUser = useMemo(() => ({ user, setUser }), [user, setUser])
+  
   return (
     
     <ThemeProvider 
@@ -28,12 +37,15 @@ function App() {
     <CssBaseline 
       enableColorScheme 
     />
+    <UserContext.Provider value={{ user, setUser }}>
       <Header/>
-      {/* <MenuDrawer/> */}
-    <Routes>
-      <Route path="/" element={<Dashboard/>}/>
-      <Route path="/session" element={<Session/>}/>
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Dashboard/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/session" element={<Session/>}/>
+      </Routes>
+    </UserContext.Provider>
 
     </ThemeProvider>
   )

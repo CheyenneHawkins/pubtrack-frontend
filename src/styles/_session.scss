@@ -30,6 +30,9 @@
   .song-title-container {
     height: 98px;
     display: flex;
+    & .css-ume8vi-MuiInputBase-input-MuiInput-input {
+      // width: 300px !important;
+    }
   }
   /* Song title input field */
   .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {

@@ -20,7 +20,7 @@ import globe from '../images/globe.png';
 
 
 // const pages = ['Dashboard', 'New Session', 'Catalog'];
-const pages = ['Dashboard', 'Session' ];
+const pages = ['Login', 'Dashboard', 'Session' ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {

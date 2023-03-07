@@ -2,8 +2,13 @@ import { Box, Typography, useTheme, colors } from "@mui/material";
 import MusicPlayer from "./MusicPlayer";
 import SessionFooterBar from "./SessionFooterBar";
 import '../styles/App.scss';
+import { useContext } from "react";
+import {UserContext} from "../context/UserContext";
+import { login } from "./Login";
 
 export default function Dashboard(){
+
+    const { user, setUser } = useContext(UserContext)
 
     return (
         <>
@@ -21,7 +26,13 @@ export default function Dashboard(){
                 alignItems='center'
                 bgcolor={colors.grey[400]} 
             >
-                Dashboarding, hard.
+                {/* {JSON.stringify(user.email, null, 2)} */}
+                <button 
+                type='button' 
+                onClick={async ()=> {
+                    const user = await login();
+                    setUser(user)
+                }}>CLICK</button>
             </Box>
             <Box 
                 width='30%' 

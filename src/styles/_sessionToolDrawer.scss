@@ -67,6 +67,31 @@
     height: 100%;
     align-content: flex-start;
     overflow-y: scroll;
+    box-sizing: border-box;
+    &::-webkit-scrollbar {
+        width: 0.3em;
+        overflow-x: visible !important;
+        background-color: transparent !important;;
+    }
+    &::-webkit-scrollbar-track {
+        overflow-x: visible !important;
+        background-color: transparent;
+        width: 0.2em !important;
+        // display: none;
+    }
+    &::-webkit-scrollbar-thumb {
+        // display: none;
+        background-color: rgb(116, 116, 116);
+        border-radius: 10px;
+        width: .5em !important;
+    }
+    & .faded {
+        opacity: .3;
+        transition: opacity .3s;
+        &:hover {
+            // opacity: 1;
+        }
+    }
   }
   
   .tool-section {
@@ -115,12 +140,29 @@
   }
   
   .search-history-crumbs {
-    width: 100%;
+    width: 350px;
     display: flex;
     opacity: .5;
     font-size: 14px;
     font-weight: 200;
     margin-bottom: -10px;
+    overflow-x: scroll;
+    p {
+        margin-top: 10px;
+        margin: 0 5px;
+        padding-bottom: 2px;
+        cursor: pointer;
+    }
+    &::-webkit-scrollbar {
+        display: none;
+
+    }
+    &::-webkit-scrollbar-track {
+
+    }
+    &::-webkit-scrollbar-thumb {
+
+    }
   
   }
   
@@ -168,29 +210,35 @@
   }
   
   
-  .rhymes-options {
+  .tool-search-options {
     height: 0px;
     transition: all .3s ease;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     overflow: hidden;
+    transition: all .7s ease !important;
+    button {
+        transition: all .1s ease !important;
+        color:rgb(116, 116, 116);
+        border-radius: 2px !important;
+        &.Mui-selected {
+            background: none !important;
+            color: inherit !important;
+        }
+    }
+    &.show {
+        box-sizing: border-box;
+        height: 75px !important;
+        transform: translateY(0px);
+        display: flex;
+        width: 100%;
+        border-top: none;
+        align-items: center;
+    }
   }
-  
-  .rhymes-options.show {
-    box-sizing: border-box;
-    height: 60px !important;
-    transform: translateY(0px);
-    display: flex;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.051);
-    /* outline: #565656 solid 1px; */
-    border: #565656 solid 1px;
-    border-top: none;
-    align-items: center;
-  }
-  
+
   .rhyme-type-label {
-    /* margin: 10px; */
     padding: 15px;
     font-weight: 500;
   }
@@ -199,7 +247,11 @@
     height: 100%;
   }
   
+
+
   .tool-results-container {
+    // max-height: 800px;
+    // overflow-x: hidden;
     & button.css-1440jaf-MuiButtonBase-root-MuiButton-root {
         height: 20px !important;
         font-weight: 100 !important;
@@ -214,11 +266,67 @@
         font-weight: 100;
         & li {
             margin: 5px 0px;
+            cursor: pointer;
         }
     }
-    & .rhyme-word-link {}
-    cursor: pointer;
-    margin-right: 10px;
+    & .rhyme-word-link {
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    & .css-8z42j4-MuiButtonBase-root-MuiToggleButton-root {
+        height: 20px!important;
+    }
+    & .topic-field {
+        width: 100%;
+        margin-top: 10px;
+        & input:focus-visible {
+            border: 0 !important;
+            outline: 0 !important;
+        }
+        // height: 60px;
+    }
+
+    & .css-axj3wf-MuiFormLabel-root-MuiInputLabel-root {
+        // height: 20px!important;
+    }
+    & .css-14t01uy-MuiInputBase-root-MuiOutlinedInput-root {
+        // height: 20px!important;
+        &:hover {
+            border: 0!important;
+            outline: 0!important;
+        }
+    }
+    & .css-p51h6s-MuiInputBase-input-MuiOutlinedInput-input {
+
+        // height: 20px!important;
+    }
+    // topic field styling
+    & .css-jnnbhv-MuiInputBase-root-MuiInput-root {
+        border-bottom: rgb(51, 51, 51) solid 1px !important;
+        &:before {
+            :hover {
+                // border-bottom: 1px !important;
+            }
+            border: 0!important;
+            outline: 0!important;
+        }
+        &:after {
+            :hover {
+                // border-bottom: 1px !important;
+            }
+            border: 0!important;
+            outline: 0!important;
+        }
+        input {
+            &:placeholder-shown {
+                opacity: .6 !important;
+            }
+            &::placeholder {
+                // position: relative !important;
+            }
+
+        }
+    }
   }
   
   

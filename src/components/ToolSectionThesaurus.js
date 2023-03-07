@@ -1,18 +1,25 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+
 import search from '../images/search.svg'
 import back from '../images/back.png'
 import forward from '../images/forward.png'
 import cancel from '../images/cancel.svg'
 import axios from 'axios';
-import { useEffect } from 'react';
+import { OutlinedInput } from '@mui/material';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -58,87 +65,129 @@ export default function ToolSectionThesaurus() {
     setExpanded(newExpanded ? panel : true);
   };
 
-  const [thesaurusInput, setThesaurusInput] = React.useState('');
-  const [thesaurusResults, setThesaurusResults] = React.useState([]);
-  const [thesaurusDisplay, setThesaurusDisplay] = React.useState(thesaurusResults);
-  const [thesaurusCrumb, setThesaurusCrumb] = React.useState('');
+  const [input, setInput] = React.useState('');
+  const [topic, setTopic] = React.useState('');
+  const [resutls, setResutls] = React.useState([]);
+  const [display, setDisplay] = React.useState(resutls);
+  const [crumb, setCrumb] = React.useState('');
   
+  const [options, setOptions] = React.useState('');
+  const [type, setType] = React.useState('ml');
+
+
   const [historyEntries, setHistoryEntries] = React.useState([]);
   const [historyIndex, setHistoryIndex] = React.useState(historyEntries.length);
   const [historyButtons, setHistoryButtons] = React.useState('hide');
   const [historyCrumbDisplay, setHistoryCrumbDisplay] = React.useState('');
 
-
-  const placeholder = ['word1', 'word2', 'word3', 'word4', 'word5', 'word6', 'word7', 'word8', 'word9', 'word10']
-
-  function getThesaurusResults(searchterm) {
-    axios.get(`https://api.datamuse.com/words?ml=${searchterm}`)
+  function getResutls(searchterm) {
+    axios.get(`https://api.datamuse.com/words?${type}=${searchterm}&topics=${topic}`)
     .then((res) => {
+      // console.log(`https://api.datamuse.com/words?${type}=${searchterm}&topics=${topic}`)
       const thesaurusRaw = []
 
-      //add results to array
-      res.data.map(item => {
-        return thesaurusRaw.push(item)
-      })
+      console.log(res.data.length)
 
-      //sort results by score
-      thesaurusRaw.sort((a, b) => {
-        return b.score - a.score
-      })
-
-      const thesaurusList = []
-      thesaurusRaw.map(item => {
-        return thesaurusList.push(item.word)
-      })
-
-      //add sorted results to state
-      setThesaurusResults(thesaurusList)
-      //set the search term display in header
-      setThesaurusCrumb(searchterm)
-
-      const history = historyEntries.map((item) => {return `${item} | `})
-      setHistoryCrumbDisplay(history)
-      })
+      if (res.data.length >= 0) {
+        //add results to array
+        res.data.map(item => {
+          return thesaurusRaw.push(item)
+        })
+  
+        //sort results by score
+        thesaurusRaw.sort((a, b) => {
+          return b.score - a.score
+        })
+  
+        const thesaurusList = []
+        thesaurusRaw.map(item => {
+          return thesaurusList.push(item.word)
+        })
+  
+        //add sorted results to state
+        setResutls(thesaurusList)
+  
+        //set the search term display in header
+        setCrumb(searchterm)
+  
+        const history = historyEntries.map((item) => {return <p key={`${item}-key`} onClick= {()=>{
+          getResutls(item)
+          setInput(item)
+        }}>
+        {`${item}`}</p>})
+  
+        setHistoryCrumbDisplay(history)    
+      } 
+    })
     }
-  function clearThesaurusResults() {
+
+  function clearResutls() {
     const thesaurusList = []
-    setThesaurusResults(placeholder)
+    setInput('')
+    setResutls('')
+    setOptions('')
+    setCrumb('')
     }
 
     useEffect(() => {
       const thesaurusList = 
-      thesaurusResults.length > 0 
-      ? thesaurusResults.map((item, index) => {
+      resutls.length > 0 
+      ? resutls.map((item, index) => {
         if (index < 100) {
           return <li key={index} alt={item} onClick={()=>{
-            historyEntries.push(thesaurusInput)
-            getThesaurusResults(item)
-            setThesaurusInput(item)
+            historyEntries.push(input)
+            getResutls(item)
+            setInput(item)
             setHistoryButtons('show')
             }}
             >{item}</li>
         }
       }) 
       : ''
-      setThesaurusDisplay(thesaurusList)
+      setDisplay(thesaurusList)
       const spot = document.getElementById('thesaurus')
       const field = spot.getElementsByTagName('input')
-      field[0].value = thesaurusInput
-    }, [thesaurusResults])
+      field[0].value = input
+    }, [resutls])
+
+//advanced thesaurus buttons 
+  function handleType(e) {
+    const currentType = (type === 'ml') ? 1 : 2
+
+    if (e.target.value === currentType) {
+      return
+    }
+    const newType = (e.target.value == 1 ? 'ml' : 'rel_ant')
+    setType(newType)
+
+  }
+
+  useEffect(() => {
+    if (input !== '') {
+      getResutls(input)
+    }
+  },[type])
+
+  function submitThesaurusEntry(e) {
+    e.preventDefault()
+    getResutls(input)
+    setHistoryEntries([])
+    setHistoryCrumbDisplay('')
+  }
+
     
     return (
       <div>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Typography>Thesaurus</Typography>
-          {(thesaurusDisplay !== '' && expanded === 'panel1') && 
+          {(display !== '' && expanded === 'panel1') && 
           <span className='search-result-header-label'>
-          {thesaurusCrumb}
+          {crumb}
           </span>
           }
         </AccordionSummary>
         <AccordionDetails>
-          {/* <button onClick={()=> {console.log(historyEntries)}}>LOG</button> */}
         <div 
           className="text-field-search-row"
           id='thesaurus'
@@ -146,61 +195,87 @@ export default function ToolSectionThesaurus() {
           <form 
             className='tool-drawer-form'
             onSubmit={(e) => {
-              e.preventDefault()
-              getThesaurusResults(thesaurusInput)
-              setHistoryEntries([])
-              setHistoryCrumbDisplay('')
+              submitThesaurusEntry(e)
             }}
           >
-          {/* <div className={`search-history-container ${historyButtons}`}>
-            <button className='search-history-button' onClick={() => {
-              console.log('forward')
-              }}>
-              <img src={forward} alt='back' height={15} />
-            </button>
-            <button className='search-history-button' onClick={() => {
-              // console.log(historyEntries[historyIndex + 1])
-              getThesaurusResults(historyEntries[historyIndex + 1])
-
-              }}>
-              <img src={back} alt='back' height={15} />
-            </button>
-          </div> */}
-            <TextField 
+            <OutlinedInput 
               fullWidth 
-              label="Search" 
               id="fullWidth" 
-              onChange={(e) => {
-                setThesaurusInput(e.target.value)
+              onChange={(e)=> {setInput(e.target.value)}}
+              onFocus={() => {
+                setOptions('show')
               }}
+              value={input}
+              placeholder="Search" 
+              endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton
+                        aria-label="clear results"
+                        onClick={()=>{clearResutls()}}
+                        edge="end"
+                        >
+                        {input.length > 0 &&
+                        <img src={cancel} alt="search" height={15} className='faded'/>
+                        }
+                        </IconButton>
+                    </InputAdornment>
+              }
             />
             <Button 
               type="submit"
               variant="contained" 
               color="primary" 
               onClick={(e) => {
-                e.preventDefault()
-                setHistoryEntries([])
-                setHistoryCrumbDisplay('')
-                getThesaurusResults(thesaurusInput)
-              }}
+              submitThesaurusEntry(e)}}
             >
               <img src={search} alt="search" height={25} />
             </Button>
-            {/* <button onClick={() => {console.log(thesaurusResults)}}>S</button>
-            <button onClick={() => {
-              clearThesaurusResults()
-              }}>C</button> */}
           </form>
         </div>
           <div className='tool-results-container'>
-          <div className="search-history-crumbs">
-          {historyCrumbDisplay}
-        </div>
-            <ul className='tool-results-list' id='thesaurusresultslist'>
-              {thesaurusDisplay}
-            </ul>
-
+          {/* <div className="search-history-crumbs">
+            {historyCrumbDisplay}
+          </div> */}
+          <div className={`tool-search-options ${options}`}>
+            <ToggleButtonGroup
+              color="primary"
+              exclusive
+              value={type === 'ml' ? 1 : 2}
+              onChange={(e) => handleType(e)}
+              aria-label="Platform"
+              fullWidth
+            >
+              <ToggleButton 
+                value={1}              
+                >Synonyms
+                </ToggleButton>
+              <ToggleButton 
+                value={2}
+                >Antonyms
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <div className="topic-field">
+            <form 
+              className='tool-drawer-form'
+              onSubmit={(e) => {
+                submitThesaurusEntry(e)
+              }}
+            >
+              <TextField 
+                fullWidth 
+                id="fullWidth" 
+                className='topic'
+                onChange={(e)=> {setTopic(e.target.value)}}
+                placeholder="topic" 
+                focused='false' 
+                variant="standard"
+              />
+            </form>
+            </div>
+          </div>
+              <ul className='tool-results-list' id='thesaurusresultslist'>
+                {display}
+              </ul>
           </div>
         </AccordionDetails>
       </Accordion>

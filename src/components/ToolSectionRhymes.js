@@ -1,14 +1,23 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
+
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { OutlinedInput } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import search from '../images/search.svg'
+import cancel from '../images/cancel.svg'
 import axios from 'axios';
 import { useEffect } from 'react';
 
@@ -55,22 +64,25 @@ export default function ToolSectionRhymes() {
     setExpanded(newExpanded ? panel : true);
   };
 
-  const [rhymesInput, setRhymesInput] = React.useState('');
-  const [rhymesResults, setRhymesResults] = React.useState([]);
-  const [rhymesDisplay, setRhymesDisplay] = React.useState(rhymesResults);
-  const [rhymesCrumb, setRhymesCrumb] = React.useState('');
+  const [input, setInput] = React.useState('');
+  const [results, setResults] = React.useState([]);
+  const [display, setDisplay] = React.useState(results);
+  const [crumb, setCrumb] = React.useState('');
+  const [options, setOptions] = React.useState('');
+  const [topic, setTopic] = React.useState('');
+  const [type, setType] = React.useState('rhy');
+  
   const [paneStyle, setPaneStyle] = React.useState('limited');
-  const [rhymeOptions, setRhymeOptions] = React.useState('');
-  const [rhymeType, setRhymeType] = React.useState('rhy');
 
   function valuetext(value) {
     return value
   }
 
-  function getrhymesResults(searchterm) {
-    axios.get(`https://api.datamuse.com/words?rel_${rhymeType}=${searchterm}`)
+  function getresults(searchterm) {
+    axios.get(`https://api.datamuse.com/words?rel_${type}=${searchterm}&topics=${topic}`)
     .then((res) => {
       const rhymesRaw = []
+      console.log(`https://api.datamuse.com/words?rel_${type}=${searchterm}&topics=${topic}`)
 
       //add results to array
       res.data.map(item => {
@@ -88,47 +100,52 @@ export default function ToolSectionRhymes() {
       })
 
       //add sorted results to state
-      setRhymesResults(rhymesList.length > 0 ? rhymesList : ['No Results Found'])
-      // setRhymesResults(rhymesList)
+      setResults(rhymesList.length > 0 ? rhymesList : ['No Results Found'])
+      // setResults(rhymesList)
       //set the search term display in header
-      setRhymesCrumb(searchterm)
+      setCrumb(searchterm)
 
       })
     }
     //clears the rhymes results list
-  function clearrhymesResults() {
+  function clearresults() {
     const rhymesList = []
-    setRhymesResults([])
-    setRhymeOptions('')
-    setRhymeType('rhy')
+    setResults([])
+    setOptions('')
+    setType('rhy')
+    setInput('')
     }
 
     //clicking on a word in the results list refreshes search with that word
   function clickRhymeWord(word) {
-    getrhymesResults(word)
-    setRhymesInput(word)
+    getresults(word)
+    setInput(word)
     const pane = document.getElementById('rhymes-tool-pane')
 
     // too jumpy when moving slider
     pane.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  //advanced rhyme slider 
-  function handleRhymeType(e) {
-    const currentType = (rhymeType === 'rhy') ? 1 : 2
-    if (e.target.value !== currentType) {
-      const newType = (e.target.value === 1? 'rhy' : 'nry')
-      setRhymeType(newType)
-      // console.log('VALUE:' + e.target.value)
-      // console.log('CURRENT:' + currentType)
+  //advanced rhyme buttons 
+  function handleType(e) {
+    const currentType = (type === 'rhy') ? 1 : 2
+
+    if (e.target.value === currentType) {
+      return
     }
+    const newType = (e.target.value == 1 ? 'rhy' : 'nry')
+    setType(newType)
+    // console.log('VALUE:' + e.target.value)
+    // console.log('CURRENT:' + currentType)
+    // console.log('newType:' + newType)
+    // console.log('newType:' + newType)
   }
 
   //populates the rhyme pane when state is updated
   useEffect(() => {
     const rhymesList = 
-    rhymesResults.length > 0 
-    ? rhymesResults.map((item, index) => {
+    results.length > 0 
+    ? results.map((item, index) => {
       if (index < 150) {
         return <li key={index} ><span className='rhyme-word-link' onClick={()=>{
           clickRhymeWord(item)
@@ -136,27 +153,27 @@ export default function ToolSectionRhymes() {
       }
     }) 
     : ''
-    setRhymesDisplay(rhymesList)
-  }, [rhymesResults])
+    setDisplay(rhymesList)
+  }, [results])
 
   //refreshes search when rhyme type is changed
   useEffect(() => {
-    if (rhymesInput !== '') {
-      getrhymesResults(rhymesInput)
+    if (input !== '') {
+      getresults(input)
     }
-  },[rhymeType])
+  },[type])
     
     return (
       <div className= {`rhymes-tool-pane ${paneStyle}`} id='rhymes-tool-pane'>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Typography>Rhymes</Typography>
-          {(rhymesDisplay !== '' && expanded === 'panel1') && 
+          {(display !== '' && expanded === 'panel1') && 
           <span className='search-result-header-label'>
             <span className='rhyme-result-type-label'>
-              {rhymeType !== 'rhy' && '(loose)'}
+              {type !== 'rhy' && '(loose)'}
             </span>
-          {rhymesCrumb}
+          {crumb}
           </span>
           }
         </AccordionSummary>
@@ -169,16 +186,33 @@ export default function ToolSectionRhymes() {
             className='tool-drawer-form'
             onSubmit={(e) => {
               e.preventDefault()
-              getrhymesResults(rhymesInput)
+              getresults(input)
             }}
           >
-            <TextField 
+            <OutlinedInput 
               fullWidth 
-              label="Search" 
               id="fullWidth" 
+              value={input}
               onChange={(e) => {
-                setRhymesInput(e.target.value)
+                setInput(e.target.value)
               }}
+              onFocus={() => {
+                setOptions('show')
+              }}
+              placeholder='Search'
+              endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton
+                        aria-label="clear results"
+                        onClick={()=>{clearresults()}}
+                        edge="end"
+                        >
+                        {input.length > 0 &&
+                        <img src={cancel} alt="search" height={15} className='faded'/>
+                        }
+                        </IconButton>
+                    </InputAdornment>
+              }
             />
             <Button 
               type="submit"
@@ -186,48 +220,53 @@ export default function ToolSectionRhymes() {
               color="primary" 
               onClick={(e) => {
                 e.preventDefault()
-                getrhymesResults(rhymesInput)
+                getresults(input)
               }}
             >
               <img src={search} alt="search" height={25} />
             </Button>
-            {/* <button onClick={() => {console.log(rhymesResults)}}>S</button> */}
-            <button type='button' onClick={() => {
-              clearrhymesResults()
-              }}>clear</button>
           </form>
         </div>
           <div className='tool-results-container'>
-          <Button 
-              type="submit"
-              variant="outlined" 
-              fullWidth 
-              color="primary" 
-              onClick={(e) => {
-                setRhymeOptions(rhymeOptions === '' ? 'show' : '')
-              }}
-            >
-            ADVANCED
-            </Button>
-            <div className={`rhymes-options ${rhymeOptions}`}>
-            <span className='rhyme-type-label'>Strict</span>
-              <Slider
-                sx={{
-                  width: 150,
+            <div className={`tool-search-options ${options}`}>
+              <ToggleButtonGroup
+                color="primary"
+                exclusive
+                value={type === 'rhy'? 1 : 2}
+                    // valueLabelDisplay="auto"
+                onChange={(e) => handleType(e)}
+                aria-label="Platform"
+                fullWidth
+              >
+                <ToggleButton 
+                  value={1}              
+                >Strict</ToggleButton>
+                <ToggleButton value={2}>Loose</ToggleButton>
+              </ToggleButtonGroup>
+              <div className='topic-field'>
+                <form 
+                  className='tool-drawer-form'
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    getresults(input)
+
                 }}
-                defaultValue={1}
-                getAriaValueText={valuetext}
-                value={rhymeType === 'rhy'? 1 : 2}
-                // valueLabelDisplay="auto"
-                onChange={(e) => handleRhymeType(e)}
-                marks
-                min={1}
-                max={2}
-              />
-            <span className='rhyme-type-label'>Loose</span>
+              >
+                  <TextField 
+                    fullWidth 
+                    id="fullWidth" 
+                    className='topic'
+                    onChange={(e)=> {setTopic(e.target.value)}}
+                    size="small"
+                    placeholder='topic'
+                    focused={false}
+                    variant='standard'
+                  />
+                </form>
+              </div>
             </div>
-            <ul className='rhymes-results-list' id='rhymesresultslist'>
-              {rhymesDisplay}
+            <ul className='tool-results-list' id='rhymesresultslist'>
+              {display}
             </ul>
 
           </div>
