@@ -259,7 +259,6 @@ export default function ToolSectionRhymes() {
                     onChange={(e)=> {setTopic(e.target.value)}}
                     size="small"
                     placeholder='topic'
-                    focused={false}
                     variant='standard'
                   />
                 </form>

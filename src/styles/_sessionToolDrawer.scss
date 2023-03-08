@@ -104,15 +104,18 @@
     position: sticky !important;
     top: 0px !important;
     z-index: 20000 !important;
-  }
-  .MuiAccordionSummary-content.Mui-expanded.css-1betqn-MuiAccordionSummary-content {
+    box-sizing: border-box !important;
+}
+.MuiAccordionSummary-content.Mui-expanded.css-1betqn-MuiAccordionSummary-content {
     display: grid !important;
     align-items: center !important;
     grid-template-columns: auto auto !important;
-  
-  }
-  
-  .search-result-header-label {
+    box-sizing: border-box !important;
+    
+}
+
+.search-result-header-label {
+    box-sizing: border-box !important;
     width: 100%;
     display: flex;
     justify-content: flex-end;
@@ -121,6 +124,8 @@
     padding-right: 20px;
     opacity: .7;
     font-weight: 200;
+    // align-items: flex-start;
+    padding-bottom: 2px;
   }
   
   .search-history-container.hide {
@@ -319,7 +324,7 @@
         }
         input {
             &:placeholder-shown {
-                opacity: .6 !important;
+                opacity: .6;
             }
             &::placeholder {
                 // position: relative !important;

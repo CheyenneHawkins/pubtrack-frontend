@@ -1,8 +1,8 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
-import {UserContext} from "../context/UserContext";
 
 import LiveTextEditor from './LiveTextEditor'
 import LiveTextEditorV2 from './LiveTextEditorV2'
+import TextEditor from './LiveTextEditorV3'
 import SessionFooterBar from './SessionFooterBar'
 import MenuDrawer from './MenuDrawer'
 import SessionToolDrawer from './SessionToolDrawer'
@@ -16,8 +16,6 @@ import cancel from '../images/cancel.svg';
 
 
 export default function Session() {
-
-    const { user, setUser } = useContext(UserContext)
 
 
     const [scratchPadShow, setScratchPadShow] = useState('scratchpad-collapsed')
@@ -75,12 +73,12 @@ export default function Session() {
                             }
                             }
                         >
-                            <h1>{songTitle}</h1>
+                            <h1>{songTitle === '' ? 'Untitled' : songTitle}</h1>
                         </button> :
                         (<>
                             <TextField 
                             id="fullWidth" 
-                            placeholder={songTitle}
+                            placeholder='Untitled'
                             variant="standard"
                             value={songTitleInput}
                             ref={songTitleRef}
@@ -128,10 +126,9 @@ export default function Session() {
                         )
                         }
                     </div>
-
-                    <LiveTextEditor placeholder='THIS IS FOR EVERYONE'/>
+                        <TextEditor />
+                    {/* <LiveTextEditor placeholder='THIS IS FOR EVERYONE'/> */}
                 </div>
-                <h1>{user}</h1>
                 <div className='scratch-editor-container'>
                     <Button 
                         onClick={toggleScratchPad}

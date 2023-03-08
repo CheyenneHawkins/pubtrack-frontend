@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useContext } from "react";
+import { useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,11 +15,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useNavigate } from 'react-router-dom';
 
 import speaker from '../images/speaker.png';
 
 import globe from '../images/globe.png';
+import { AuthContext } from '../context/authContext';
 
 
 // const pages = ['Dashboard', 'New Session', 'Catalog'];
@@ -24,10 +27,18 @@ const pages = ['Login', 'Dashboard', 'Session' ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   
   const navigate = useNavigate();
+
+  const { user, logout } = useContext(AuthContext)
+
+  function onLogOut() {
+    logout();
+    navigate('/login');
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -171,11 +182,13 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={'asdf'} onClick={()=> {
+                  handleCloseUserMenu()
+                  onLogOut()
+                }
+                  }>
+                  <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
-              ))}
             </Menu>
           </Box>
         </Toolbar>

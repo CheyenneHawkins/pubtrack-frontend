@@ -3,12 +3,15 @@ import MusicPlayer from "./MusicPlayer";
 import SessionFooterBar from "./SessionFooterBar";
 import '../styles/App.scss';
 import { useContext } from "react";
-import {UserContext} from "../context/UserContext";
 import { login } from "./Login";
+import { AuthContext } from "../context/authContext";
+
 
 export default function Dashboard(){
 
-    const { user, setUser } = useContext(UserContext)
+    const { user, logout } = useContext(AuthContext)
+
+    console.log(user)
 
     return (
         <>
@@ -26,13 +29,6 @@ export default function Dashboard(){
                 alignItems='center'
                 bgcolor={colors.grey[400]} 
             >
-                {/* {JSON.stringify(user.email, null, 2)} */}
-                <button 
-                type='button' 
-                onClick={async ()=> {
-                    const user = await login();
-                    setUser(user)
-                }}>CLICK</button>
             </Box>
             <Box 
                 width='30%' 

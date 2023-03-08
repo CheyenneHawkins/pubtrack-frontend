@@ -267,7 +267,6 @@ export default function ToolSectionThesaurus() {
                 className='topic'
                 onChange={(e)=> {setTopic(e.target.value)}}
                 placeholder="topic" 
-                focused='false' 
                 variant="standard"
               />
             </form>

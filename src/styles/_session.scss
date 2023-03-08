@@ -30,6 +30,7 @@
   .song-title-container {
     height: 98px;
     display: flex;
+    min-width: 100px !important;
     & .css-ume8vi-MuiInputBase-input-MuiInput-input {
       // width: 300px !important;
     }
