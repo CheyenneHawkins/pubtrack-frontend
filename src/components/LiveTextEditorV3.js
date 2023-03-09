@@ -3,6 +3,7 @@ import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
+import CustomToast from "./CustomToast"
 
 const SAVE_INTERVAL_MS = 5000
 
@@ -22,6 +23,7 @@ export default function TextEditor() {
   const [saveStatus, setSaveStatus] = useState(false)
 
   const [statusLight, setStatusLight] = useState('saved')
+  const [socketStatus, setSocketStatus] = useState(true)
 
 
 
@@ -42,6 +44,7 @@ export default function TextEditor() {
       quill.setContents(document)
       quill.enable()
     })
+    setSocketStatus(true)
     console.log('saveStatus:', saveStatus)
     socket.emit("get-document", documentId)
   }, [socket, quill, documentId])
@@ -63,14 +66,22 @@ export default function TextEditor() {
 
   //UE-SEND CHANGES
   useEffect(() => {
-    if (socket == null || quill == null) return
-    
-    //saveStatus is set to true when the first change is received
-    // setSaveStatus(true)
+      
+      if (socket == null || quill == null) return
+      
+      
+      //saveStatus is set to true when the first change is received
+      // setSaveStatus(true)
+      
+      const handler = (delta, oldDelta, source) => {
+        if (source !== "user") return
 
-    const handler = (delta, oldDelta, source) => {
-      if (source !== "user") return
-      socket.emit("send-changes", delta)
+        if (socket.status === false) {
+            console.log('should send changes')
+            setSocketStatus(false)
+            return
+        }
+        socket.emit("send-changes", delta)
     //   setStatusLight('unsaved')
     }
     quill.on("text-change", handler)
@@ -103,6 +114,16 @@ export default function TextEditor() {
         }
       }, [socket, quill])
 
+// DOESN'T WORK
+    //   useEffect(() => {
+    //     if (socket && socket.status === false) {
+    //         console.log('should send changes')
+    //         setSocketStatus(false)
+    //         return
+    //     }
+    //     return
+    //   }, [socket])
+
   //waits for page to load, then adds element to the parent component
   const wrapperRef = useCallback(wrapper => {
     if (wrapper == null) return
@@ -129,7 +150,11 @@ export default function TextEditor() {
   }, [])
   return (
     <>
-        <button onClick={() => {console.log('click')}}>CLICK IT</button>
+        <CustomToast show={socketStatus} message='Document is offline' autoHideDuration={null} severity='warning'/>
+
+        <button onClick={() => {console.log(socket)}}>SOCKET LOG</button>
+        <br />
+        <button onClick={() => {setSocketStatus(false)}}>MOCK DISCONNECT</button>
         <div >{statusLight}</div>
         <div className="live-quill-container" ref={wrapperRef}>
 

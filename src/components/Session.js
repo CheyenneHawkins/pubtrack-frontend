@@ -1,15 +1,19 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
 import QRCode from "react-qr-code";
 
+import { Button } from '@mui/material'
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import CustomToast from './CustomToast';
+
 import LiveTextEditor from './LiveTextEditor'
 import LiveTextEditorV2 from './LiveTextEditorV2'
 import TextEditor from './LiveTextEditorV3'
 import SessionFooterBar from './SessionFooterBar'
-import MenuDrawer from './MenuDrawer'
 import SessionToolDrawer from './SessionToolDrawer'
-// import DraggableDiv from './DraggableDiv'
-import { Button } from '@mui/material'
-import TextField from '@mui/material/TextField';
+
 import spade from '../images/spade.png';
 import forward from '../images/forward.png';
 import confirm from '../images/confirm.svg';
@@ -39,6 +43,27 @@ export default function Session() {
         setScratchPadShow(scratchPadShow ==='scratchpad-collapsed'?'scratchpad-expanded' :'scratchpad-collapsed')
     }
 
+    // const Alert = React.forwardRef(function Alert(props, ref) {
+    //     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    //   });
+      
+
+    // const [open, setOpen] = useState(false);
+    
+    // const handleClick = () => {
+    //     setOpen(true);
+    // };
+    
+    // const handleClose = (event, reason) => {
+    //     if (reason === 'clickaway') {
+    //     return;
+    //     }
+    
+    //     setOpen(false);
+    // };
+
+
+
     useEffect(() => {
         if (songTitleStatus === 'edit') {
             songTitleRef.current.children[0]?.children[0]?.focus();
@@ -63,6 +88,18 @@ export default function Session() {
     </button>
     <div className='session-container'>
         <div className='session'>
+            {/* <Stack spacing={2} sx={{ width: '100%' }}>
+                <Snackbar 
+                    open={open} 
+                    autoHideDuration={6000} 
+                    onClose={handleClose}
+                >
+                <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                    This is a success message!
+                </Alert>
+                </Snackbar>
+
+            </Stack> */}
             <div className={`text-editors-container ${toolDrawerOpen ? 'toolbar-open' : 'toolbar-closed'}`}>
                 <div className='live-editor-container'>
                     <div className='song-title-container'>
