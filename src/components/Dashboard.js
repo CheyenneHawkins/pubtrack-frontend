@@ -11,8 +11,6 @@ export default function Dashboard(){
 
     const { user, logout } = useContext(AuthContext)
 
-    console.log(user)
-
     return (
         <>
         <Box 
@@ -29,6 +27,10 @@ export default function Dashboard(){
                 alignItems='center'
                 bgcolor={colors.grey[400]} 
             >
+            {user 
+                ? <h2> Hey {user.name}, you're email address is {user.email}!!</h2>
+                : <h2> You should login. </h2>}
+                <button onClick={()=> {console.log(user)}}>USER</button>
             </Box>
             <Box 
                 width='30%' 

@@ -26,15 +26,6 @@ import { Stack } from '@mui/system';
 import globe from '../images/globe.png';
 
 
-
-export const login = async (req, res) => {
-    return {
-        id: 8,
-        username: "Jimmy",
-        email: "you@me.com",
-    }
-}
-
 const REGISTER_USER = gql`
     mutation Mutation(
         $registerInput: RegisterInput
@@ -83,6 +74,8 @@ export default function Login() {
     const [loginType, setLoginType] = useState('login');
     const [errors, setErrors] = useState([]);
     
+    const { user, logout } = useContext(AuthContext)
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     
     const handleMouseDownPassword = (event) => {
@@ -134,82 +127,111 @@ export default function Login() {
     ////
     return (
         <div className='login'>
-        <form className='login-container'>
-        <Stack 
-            spacing={2}
-            width='100%'
-        >
-        <div className='login-header'>
-            <img src={globe} alt='logo' height={50} />
-            <h1>PUBTRACK</h1>
-        </div>
-            {loginType === 'register' &&
-            <OutlinedInput 
-                fullWidth
-                onChange={(e) => {
-                    setValues({...values, name: e.target.value })
+        {user === null ? 
+        <>
+            <form className='login-container'>
+            <Stack 
+                spacing={2}
+                width='100%'
+            >
+            <div className='login-header'>
+                <img src={globe} alt='logo' height={50} />
+                <h1>PUBTRACK</h1>
+            </div>
+                {loginType === 'register' &&
+                <OutlinedInput 
+                    fullWidth
+                    onChange={(e) => {
+                        setValues({...values, name: e.target.value })
+                        }}
+                    placeholder='Full Name'
+                />}
+                <OutlinedInput 
+                    fullWidth
+                    onChange={(e) => {
+                        setValues({...values, email: e.target.value })
+                        setLoginValues({...loginValues, email: e.target.value })
+                        }}
+                    placeholder='Email'
+                    autoComplete='email'
+                />
+                <OutlinedInput 
+                    fullWidth
+                    onChange={(e) => {
+                        setValues({...values, password: e.target.value })
+                        setLoginValues({...loginValues, password: e.target.value })
+                        }}
+                    placeholder='Password'
+                    autoComplete='current-password'
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleSubmit(e)
+                        }
                     }}
-                placeholder='Full Name'
-            />}
-            <OutlinedInput 
-                fullWidth
-                onChange={(e) => {
-                    setValues({...values, email: e.target.value })
-                    setLoginValues({...loginValues, email: e.target.value })
-                    }}
-                placeholder='Email'
-            />
-            <OutlinedInput 
-                fullWidth
-                onChange={(e) => {
-                    setValues({...values, password: e.target.value })
-                    setLoginValues({...loginValues, password: e.target.value })
-                    }}
-                placeholder='Password'
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleSubmit(e)
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                            >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
                     }
-                }}
-                type={showPassword ? 'text' : 'password'}
-                endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                    </InputAdornment>
-                }
-            />
-            <Button
-                fullWidth
-                label='Login'
-                size='large'
-                variant='contained'
-                onClick={(e) => {
-                    console.log(loginValues)
-                    handleSubmit(e)
-                }}
-            >{loginType === 'login' ? 'Login' : 'Register'}
-            </Button>
-            </Stack>
-                {errors.map(function (error, index) {
-                    return (
-                        <Alert severity='error' key={index}>{error.message}</Alert>
-                    )
-                })}
-        </form>
-            <button type='button' 
-                className='naked-button'
-                id='login-type-button'
-                onClick={()=>{handleLoginType()}}
-                >{loginType === 'login' ? 'New user?' : 'Already have an account?'}
-            </button>
+                />
+                <Button
+                    fullWidth
+                    label='Login'
+                    size='large'
+                    variant='contained'
+                    onClick={(e) => {
+                        console.log(loginValues)
+                        handleSubmit(e)
+                    }}
+                >{loginType === 'login' ? 'Login' : 'Register'}
+                </Button>
+                </Stack>
+                    {errors.map(function (error, index) {
+                        return (
+                            <Alert severity='error' key={index}>{error.message}</Alert>
+                        )
+                    })}
+            </form>
+                <button type='button' 
+                    className='naked-button'
+                    id='login-type-button'
+                    onClick={()=>{handleLoginType()}}
+                    >{loginType === 'login' ? 'New user?' : 'Already have an account?'}
+                </button>
+            </>
+            : <>
+                <div className='login-container'>
+                    You already here dog.
+                <div 
+                    className='button-spaced'
+                >
+                    <Button
+                        fullWidth
+                        label='Login'
+                        size='large'
+                        variant='contained'
+                        onClick={()=>{logout()}}
+                    >
+                        LOGOUT
+                    </Button>
+                    
+                </div>
+                </div> 
+            </>
+        }
+                <button type='button' 
+                    onClick={()=>{console.log(user)}}
+                    >CHECK USER
+                </button>
     </div>
   )
 }

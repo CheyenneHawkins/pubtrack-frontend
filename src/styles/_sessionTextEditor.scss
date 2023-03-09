@@ -30,10 +30,15 @@
   
   }
   
+  .live-quill-container {
+    max-width: 100% !important;
+
+  }
   
   .ql-container {
     border-radius: 0px 0px 5px 5px !important;
     width: auto !important;
+    transition: all .2s !important;
   }
   
   .quill {
@@ -131,4 +136,28 @@
     font-weight: 900 !important;
   }
   
+  .animate-character
+  {
+    background-image: linear-gradient(
+      0deg,
+      #000000 0%,
+      #ffffff 67%,
+      #000000 100%
+    );
+    // background-size: auto auto;
+    background-clip: border-box;
+    background-size: 300% auto;
+    color: #fff;
+    background-clip: text;
+    // text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 1s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+    width: 100%;
+  }
   
+  @keyframes textclip {
+    to {
+      background-position: 5% center;
+    }
+  }

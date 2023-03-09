@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
+import QRCode from "react-qr-code";
 
 import LiveTextEditor from './LiveTextEditor'
 import LiveTextEditorV2 from './LiveTextEditorV2'
@@ -13,6 +14,7 @@ import spade from '../images/spade.png';
 import forward from '../images/forward.png';
 import confirm from '../images/confirm.svg';
 import cancel from '../images/cancel.svg';
+import { QrCode } from '@mui/icons-material';
 
 
 export default function Session() {
@@ -123,10 +125,9 @@ export default function Session() {
                         <img src={cancel} alt='Cancel' />
                         </button>
                         </>
-                        )
-                        }
+                        )}
                     </div>
-                        <TextEditor />
+                        <TextEditor placeholder='WRITE A SONG'/>
                     {/* <LiveTextEditor placeholder='THIS IS FOR EVERYONE'/> */}
                 </div>
                 <div className='scratch-editor-container'>

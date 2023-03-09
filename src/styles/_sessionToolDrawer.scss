@@ -34,6 +34,11 @@
     text-transform: uppercase !important;
     opacity: .1;
     padding-left: 15px;
+    transition: all .4s !important;
+    &:hover{
+        letter-spacing: 1.505rem;
+        opacity: .15 !important;
+    }
   
   }
   
@@ -125,7 +130,7 @@
     opacity: .7;
     font-weight: 200;
     // align-items: flex-start;
-    padding-bottom: 2px;
+    // padding-bottom: 2px;
   }
   
   .search-history-container.hide {
