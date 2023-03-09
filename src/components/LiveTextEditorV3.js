@@ -150,11 +150,11 @@ export default function TextEditor() {
   }, [])
   return (
     <>
-        <CustomToast show={socketStatus} message='Document is offline' autoHideDuration={null} severity='warning'/>
+        <CustomToast show={!socketStatus} message='Document is offline' autoHideDuration={null} severity='warning'/>
 
         <button onClick={() => {console.log(socket)}}>SOCKET LOG</button>
         <br />
-        <button onClick={() => {setSocketStatus(false)}}>MOCK DISCONNECT</button>
+        <button onClick={() => {setSocketStatus(!socketStatus)}}>MOCK DISCONNECT</button>
         <div >{statusLight}</div>
         <div className="live-quill-container" ref={wrapperRef}>
 

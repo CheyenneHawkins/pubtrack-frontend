@@ -28,16 +28,15 @@ export default function CustomToast(props) {
         setOpen(false);
     };
 
+    // detect prop change
     useEffect(() => {
-        // if socket is connected, hide alert
-        if (show === true) {
+        // hide alert
+        if (show === false) {
             setOpen(false);
-            console.log('socket is connected');
         }
-        // if socket is disconnected, show alert
+        show alert
         else {
             setOpen(true);
-            console.log('socket DISCONNECTED');
         }
 
     }, [show]);
@@ -45,16 +44,15 @@ export default function CustomToast(props) {
   return (
     <div>
         <Stack spacing={2} sx={{ width: '100%' }}>
-        <Snackbar 
-            open={open} 
-            autoHideDuration={autoHideDuration}
-            onClose={handleClose}
-        >
-        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
-            {message}
-        </Alert>
-        </Snackbar>
-
+            <Snackbar 
+                open={open} 
+                autoHideDuration={autoHideDuration}
+                onClose={handleClose}
+            >
+                <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </Stack>
     </div>
   )
