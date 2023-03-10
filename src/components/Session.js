@@ -1,4 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
+import { AuthContext } from '../context/authContext';
+
 import QRCode from "react-qr-code";
 
 import { Button } from '@mui/material'
@@ -23,12 +25,13 @@ import { QrCode } from '@mui/icons-material';
 
 export default function Session() {
 
+    const { user, logout } = useContext(AuthContext)
 
     const [scratchPadShow, setScratchPadShow] = useState('scratchpad-collapsed')
 
     const [toolDrawerOpen, setToolDrawerOpen] = React.useState(true);
 
-    const [songTitle, setSongTitle] = React.useState('Untitled');
+    const [songTitle, setSongTitle] = React.useState('Untitled Butts');
     const [songTitleInput, setSongTitleInput] = React.useState(songTitle);
     const [songTitleStatus, setSongTitleStatus] = React.useState('read');
 
@@ -43,26 +46,6 @@ export default function Session() {
         setScratchPadShow(scratchPadShow ==='scratchpad-collapsed'?'scratchpad-expanded' :'scratchpad-collapsed')
     }
 
-    // const Alert = React.forwardRef(function Alert(props, ref) {
-    //     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    //   });
-      
-
-    // const [open, setOpen] = useState(false);
-    
-    // const handleClick = () => {
-    //     setOpen(true);
-    // };
-    
-    // const handleClose = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //     return;
-    //     }
-    
-    //     setOpen(false);
-    // };
-
-
 
     useEffect(() => {
         if (songTitleStatus === 'edit') {
@@ -72,6 +55,13 @@ export default function Session() {
             }
         }
     }, [songTitleStatus])
+
+    // updates song input field when colloaborater changes song title;
+    // otherwise when user clicks to change title, the placeholder text
+    // is outdated
+    useEffect(() => {
+        setSongTitleInput(songTitle)
+    }, [songTitle])
 
     return (
     <>
@@ -88,18 +78,6 @@ export default function Session() {
     </button>
     <div className='session-container'>
         <div className='session'>
-            {/* <Stack spacing={2} sx={{ width: '100%' }}>
-                <Snackbar 
-                    open={open} 
-                    autoHideDuration={6000} 
-                    onClose={handleClose}
-                >
-                <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-                    This is a success message!
-                </Alert>
-                </Snackbar>
-
-            </Stack> */}
             <div className={`text-editors-container ${toolDrawerOpen ? 'toolbar-open' : 'toolbar-closed'}`}>
                 <div className='live-editor-container'>
                     <div className='song-title-container'>
@@ -163,9 +141,13 @@ export default function Session() {
                         </button>
                         </>
                         )}
+                        <button type='button' onClick={()=> {console.log(songTitle)}}>LOG</button>
                     </div>
-                        <TextEditor placeholder='WRITE A SONG'/>
-                    {/* <LiveTextEditor placeholder='THIS IS FOR EVERYONE'/> */}
+                        <TextEditor 
+                            placeholder='WRITE A SONG'
+                            songTitle={songTitle}
+                            setSongTitle={setSongTitle}
+                        />
                 </div>
                 <div className='scratch-editor-container'>
                     <Button 
@@ -175,7 +157,9 @@ export default function Session() {
                     >SCRATCHPAD
                     </Button>
                     <div className={scratchPadShow}>
-                        <LiveTextEditor placeholder='FOR YOUR EYES ONLY'/>
+                        <LiveTextEditor 
+                        placeholder='FOR YOUR EYES ONLY'
+                        />
                     </div>            
                 </div>
             </div>

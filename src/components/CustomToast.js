@@ -34,7 +34,7 @@ export default function CustomToast(props) {
         if (show === false) {
             setOpen(false);
         }
-        show alert
+        // show alert
         else {
             setOpen(true);
         }
