@@ -177,6 +177,12 @@ export default function TextEditor(props) {
 
             <button onClick={() => {console.log(socket)}}>SOCKET LOG</button>
             <br />
+            <button onClick={() => {
+                const id = '5d4fa554-3c7b-46a7-8535-212b23c0adb3'
+                socket.emit('search-docs', id)
+                console.log(socket)
+            }}>SOCKET EMIT</button>
+            <br />
             <button onClick={() => {console.log(user)}}>USER LOG</button>
             <br />
             <button onClick={() => {setSocketStatus(!socketStatus)}}>MOCK DISCONNECT</button>

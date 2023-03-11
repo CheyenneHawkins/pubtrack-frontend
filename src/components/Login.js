@@ -55,6 +55,17 @@ const LOGIN_USER = gql`
         }
 `
 
+const QUERY_USER_BY_EMAIL = gql`
+    query GetUserByEmail(
+        $email: String!
+    ) {
+        getUserByEmail(
+            email: $email
+        ) {
+            name
+        }
+    }
+`
 
 export default function Login() {
     
@@ -89,6 +100,9 @@ export default function Login() {
     const context = useContext(AuthContext);
     let navigate = useNavigate();
 
+    // const  { loading: queryLoading, error: queryError , data: queryData  } = useQuery(QUERY_USER_BY_EMAIL, { variables: { email: 'cheyenne.hawkins@gmail.com' }});
+
+    // console.log(queryData);
 
     ////
     const  [registerUser, { loading, error, data }] = useMutation(REGISTER_USER, {
@@ -113,10 +127,6 @@ export default function Login() {
         variables: { loginInput: loginValues}
     });
 
-    // function loginUser() {
-    //     console.log('LOG IT IN!!');
-    //     console.log(loginValues);
-    // }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -210,7 +220,8 @@ export default function Login() {
             </>
             : <>
                 <div className='login-container'>
-                    You already here dog.
+                    You already here dog.}.
+                    {/* You already here {queryData ? queryData?.getUserByEmail?.name : 'guy'}. */}
                 <div 
                     className='button-spaced'
                 >
@@ -232,6 +243,15 @@ export default function Login() {
                     onClick={()=>{console.log(user)}}
                     >CHECK USER
                 </button>
+                <br/>
+                <button type='button' 
+                    onClick={()=>{
+                        // GetUserByEmail('cheyenne.hawkins@gmail.com')
+                        }}
+                    >CHECK QUERY
+                </button>
+                <br/>
+                {/* <h1>{queryData.getUserByEmail.name}</h1> */}
     </div>
   )
 }
