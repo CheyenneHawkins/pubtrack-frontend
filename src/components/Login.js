@@ -220,7 +220,7 @@ export default function Login() {
             </>
             : <>
                 <div className='login-container'>
-                    You already here dog.}.
+                    You already here dog.
                     {/* You already here {queryData ? queryData?.getUserByEmail?.name : 'guy'}. */}
                 <div 
                     className='button-spaced'
@@ -246,6 +246,7 @@ export default function Login() {
                 <br/>
                 <button type='button' 
                     onClick={()=>{
+                        console.log(user._id)
                         // GetUserByEmail('cheyenne.hawkins@gmail.com')
                         }}
                     >CHECK QUERY

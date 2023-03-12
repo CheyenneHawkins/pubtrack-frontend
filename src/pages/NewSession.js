@@ -13,16 +13,16 @@ useEffect(()=>{
 }, [])
 
     return (
-<div class='triangles'>
-  <div class='tri invert'></div>
-  <div class='tri invert'></div>
-  <div class='tri'></div>
-  <div class='tri invert'></div>
-  <div class='tri invert'></div>
-  <div class='tri'></div>
-  <div class='tri invert'></div>
-  <div class='tri'></div>
-  <div class='tri invert'></div>
+<div className='triangles'>
+  <div className='tri invert'></div>
+  <div className='tri invert'></div>
+  <div className='tri'></div>
+  <div className='tri invert'></div>
+  <div className='tri invert'></div>
+  <div className='tri'></div>
+  <div className='tri invert'></div>
+  <div className='tri'></div>
+  <div className='tri invert'></div>
 </div>
   )
 }

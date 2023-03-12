@@ -31,7 +31,7 @@ export default function Session() {
 
     const [toolDrawerOpen, setToolDrawerOpen] = React.useState(true);
 
-    const [songTitle, setSongTitle] = React.useState('Untitled Butts');
+    const [songTitle, setSongTitle] = React.useState('Untitled');
     const [songTitleInput, setSongTitleInput] = React.useState(songTitle);
     const [songTitleStatus, setSongTitleStatus] = React.useState('read');
 
