@@ -33,6 +33,7 @@ export default function Session() {
 
     const { user, logout } = useContext(AuthContext)
 
+    //document id from the url
     const { documentId } = useParams()
 
     const { loading, error, data } = useQuery(GET_DOCUMENT_BY_ID, {
@@ -44,7 +45,11 @@ export default function Session() {
     const [toolDrawerOpen, setToolDrawerOpen] = React.useState(true);
 
     const [songTitle, setSongTitle] = React.useState();
+
+    //passed as a prop to the Live Editor so socket messages can update it
     const [songTitleInput, setSongTitleInput] = React.useState(songTitle);
+
+    //deteremins if song title is displayed or edit field is displayed
     const [songTitleStatus, setSongTitleStatus] = React.useState('read');
 
     const songTitleRef = useRef(null);
@@ -161,7 +166,7 @@ export default function Session() {
                         </button>
                         </>
                         )}
-                        <button type='button' onClick={()=> {console.log(data.getDocumentById.title)}}>LOG</button>
+                        {/* <button type='button' onClick={()=> {console.log(data.getDocumentById.title)}}>LOG</button> */}
                     </div>
                         <TextEditor 
                             placeholder='WRITE A SONG'

@@ -44,16 +44,22 @@ export default function Dashboard(){
     });
     
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :(</p>;
+    if (error) console.log(error)
     
-    const docList = data.getDocumentsByOwner.map(doc => (
-        doc
-        // <li key={doc._id}>
-        //   <a href={`/session/${doc._id}`}>{doc.title}</a> 
-        // </li>
-        ))
+    const docList = [{title: 'Big Song', writers: 'Big Boy', owner: {email: 'big@boy.com'}}]
+
+    // const docList = data ? data?.getDocumentsByOwner.map(doc => (
+    //     doc
+    //     // <li key={doc._id}>
+    //     //   <a href={`/session/${doc._id}`}>{doc.title}</a> 
+    //     // </li>
+    //     )) : ''
         
-    const songTable = <SongsTable tableHeaders={['Title', 'Writers', 'Status']} tableRows={docList}/>
+    const songTable = 
+    <SongsTable 
+        tableHeaders={['Title', 'Writers', 'Status']} 
+        tableRows={docList}
+    />
     
     return (
         <>

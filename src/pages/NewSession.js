@@ -8,21 +8,23 @@ export default function NewSession() {
 const navigate = useNavigate();
 
 useEffect(()=>{
-    setTimeout(() => {navigate(`/session/${uuidV4()}`)}, 500)
-    // navigate(`/session/${uuidV4()}`);
+    setTimeout(() => {navigate(`/session/${uuidV4()}`)}, 1000)
 }, [])
 
+// <div className='triangles'>
+//   <div className='tri invert'></div>
+//   <div className='tri invert'></div>
+//   <div className='tri'></div>
+//   <div className='tri invert'></div>
+//   <div className='tri invert'></div>
+//   <div className='tri'></div>
+//   <div className='tri invert'></div>
+//   <div className='tri'></div>
+//   <div className='tri invert'></div>
+// </div>
     return (
-<div className='triangles'>
-  <div className='tri invert'></div>
-  <div className='tri invert'></div>
-  <div className='tri'></div>
-  <div className='tri invert'></div>
-  <div className='tri invert'></div>
-  <div className='tri'></div>
-  <div className='tri invert'></div>
-  <div className='tri'></div>
-  <div className='tri invert'></div>
-</div>
+      <div className='spinner-container'>
+        <div class="spinner"></div>
+      </div>
   )
 }

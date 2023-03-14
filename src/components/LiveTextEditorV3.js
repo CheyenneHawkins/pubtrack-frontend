@@ -168,10 +168,6 @@ export default function TextEditor(props) {
         q.disable()
         q.setText('✎ ✎ ✎')
         setQuill(q)
-        // editor.classList.add('animate-character')
-        // setTimeout(() => {
-        //     editor.classList.remove('animate-character')
-        // }, 1000)
         // allows saving after the content has loaded in
         setSaveStatus(false)
     }, [])
@@ -179,7 +175,7 @@ export default function TextEditor(props) {
         <>
             <CustomToast show={!socketStatus} message='Document is offline' autoHideDuration={null} severity='warning'/>
 
-            <button onClick={() => {console.log(socket)}}>SOCKET LOG</button>
+            {/* <button onClick={() => {console.log(socket)}}>SOCKET LOG</button>
             <br />
             <button onClick={() => {
                 const id = '5d4fa554-3c7b-46a7-8535-212b23c0adb3'
@@ -189,8 +185,9 @@ export default function TextEditor(props) {
             <br />
             <button onClick={() => {console.log(saveStatus)}}>saveStatus</button>
             <br />
-            <button onClick={() => {setSocketStatus(!socketStatus)}}>MOCK DISCONNECT</button>
-            <div >{statusLight}</div>
+            <button onClick={() => {setSocketStatus(!socketStatus)}}>MOCK DISCONNECT</button> */}
+
+            {/* <div >{statusLight}</div> */}
             <div className="live-quill-container" ref={wrapperRef} onKeyDown={updateLiveEditor}>
 
             </div>
