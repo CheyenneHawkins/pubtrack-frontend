@@ -7,7 +7,7 @@ import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
 import CustomToast from "./CustomToast"
 
-const SAVE_INTERVAL_MS = 5000
+const SAVE_INTERVAL_MS = 30000
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -32,7 +32,7 @@ export default function TextEditor(props) {
     const [socketStatus, setSocketStatus] = useState(true)
 
     const { songTitle, setSongTitle } = props;
-    const owner = user ? user.email : '';;
+    const owner = user ? user : '';
 
 
     useEffect(() => {
@@ -65,7 +65,7 @@ export default function TextEditor(props) {
         if (socket == null || quill == null) return
         
         //saveStatus is set to true when the first change is received
-        // setSaveStatus(true)
+        setSaveStatus(true)
 
         const handler = (delta, oldDelta, source) => {
         if (source !== "user") return
@@ -122,21 +122,25 @@ export default function TextEditor(props) {
         if (saveStatus) {
             console.log('saveStatus:', saveStatus)
 
-            socket.emit("save-document", quill.getContents())
-            console.log("saved")
+            // socket.emit("save-document", quill.getContents())
+            // console.log("saved")
             
             const interval = setInterval(() => {
-                socket.emit("save-document", quill.getContents())
-                // setStatusLight('saved')
-                console.log("saved")
+                    socket.emit("save-document", quill.getContents())
+                    console.log("saved")
             }, SAVE_INTERVAL_MS)
-            
+
             return () => {
                 clearInterval(interval)
             }
         }
         }, [socket, quill])
 
+
+        function updateLiveEditor() {
+            socket.emit("save-document", quill.getContents())
+            console.log("saved")
+        }
     // DOESN'T WORK
         //   useEffect(() => {
         //     if (socket && socket.status === false) {
@@ -169,7 +173,7 @@ export default function TextEditor(props) {
         //     editor.classList.remove('animate-character')
         // }, 1000)
         // allows saving after the content has loaded in
-        setSaveStatus(true)
+        setSaveStatus(false)
     }, [])
     return (
         <>
@@ -183,11 +187,11 @@ export default function TextEditor(props) {
                 console.log(socket)
             }}>SOCKET EMIT</button>
             <br />
-            <button onClick={() => {console.log(user)}}>USER LOG</button>
+            <button onClick={() => {console.log(saveStatus)}}>saveStatus</button>
             <br />
             <button onClick={() => {setSocketStatus(!socketStatus)}}>MOCK DISCONNECT</button>
             <div >{statusLight}</div>
-            <div className="live-quill-container" ref={wrapperRef}>
+            <div className="live-quill-container" ref={wrapperRef} onKeyDown={updateLiveEditor}>
 
             </div>
 

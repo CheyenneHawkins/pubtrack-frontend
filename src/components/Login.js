@@ -23,49 +23,55 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Alert, Button } from '@mui/material';
 import { Stack } from '@mui/system';
 
+import {   REGISTER_USER,
+            LOGIN_USER,
+} from '../graphql/mutations'
+
 import globe from '../images/globe.png';
 
 
-const REGISTER_USER = gql`
-    mutation Mutation(
-        $registerInput: RegisterInput
-        ) {
-            registerUser(
-                registerInput: $registerInput
-            ) {
-            name
-            email
-            password
-            token
-            }
-        }
-`
+// const REGISTER_USER = gql`
+//     mutation Mutation(
+//         $registerInput: RegisterInput
+//         ) {
+//             registerUser(
+//                 registerInput: $registerInput
+//             ) {
+//             _id
+//             name
+//             email
+//             password
+//             token
+//             }
+//         }
+// `
 
-const LOGIN_USER = gql`
-    mutation Mutation(
-        $loginInput: LoginInput
-        ) {
-            loginUser(
-                loginInput: $loginInput
-            ) {
-            name
-            email
-            token
-            }
-        }
-`
+// const LOGIN_USER = gql`
+//     mutation Mutation(
+//         $loginInput: LoginInput
+//         ) {
+//             loginUser(
+//                 loginInput: $loginInput
+//             ) {
+//             _id
+//             name
+//             email
+//             token
+//             }
+//         }
+// `
 
-const QUERY_USER_BY_EMAIL = gql`
-    query GetUserByEmail(
-        $email: String!
-    ) {
-        getUserByEmail(
-            email: $email
-        ) {
-            name
-        }
-    }
-`
+// const QUERY_USER_BY_EMAIL = gql`
+//     query GetUserByEmail(
+//         $email: String!
+//     ) {
+//         getUserByEmail(
+//             email: $email
+//         ) {
+//             name
+//         }
+//     }
+// `
 
 export default function Login() {
     

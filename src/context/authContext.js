@@ -8,12 +8,14 @@ const initialState = {
 if (localStorage.getItem('userToken')) {
     const decodedToken = jwtDecode(localStorage.getItem('userToken'));
 
-    if (decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem('userToken');
-    } else {
-        initialState.user = decodedToken;
-    }
-}
+    initialState.user = decodedToken;
+
+    // if (decodedToken.exp * 1000 < Date.now()) {
+    //     localStorage.removeItem('userToken');
+    // } else {
+    //     initialState.user = decodedToken;
+    // }
+};
 
 const AuthContext = createContext({
     user: null,
@@ -21,6 +23,7 @@ const AuthContext = createContext({
     logout: () => {}
 });
 
+// action.payload returns the fields from the graphql mutation
 function authReducer(state, action) {
     switch (action.type) {
         case 'LOGIN':
@@ -39,6 +42,7 @@ function authReducer(state, action) {
 }
 
 function AuthProvider(props) {
+    
     const [state, dispatch] = useReducer(authReducer, initialState);
 
     const login = (userData) => {

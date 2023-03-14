@@ -1,12 +1,13 @@
 import player from '../images/player-temp.png';
+import MusicPlayer from './MusicPlayer';
 
 export default function SessionFooterBar() {
 
     return (
     <>
         <div className="session-footer-bar">
-        <img src={player} alt="player" className="session-footer-bar-player"/>
-        {/* <h1>footer</h1> */}
+        {/* <MusicPlayer /> */}
+        <img src={player} alt="player" height={100} className="session-footer-bar-player"/>
         </div>
     </>
     )

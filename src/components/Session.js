@@ -20,18 +20,30 @@ import spade from '../images/spade.png';
 import forward from '../images/forward.png';
 import confirm from '../images/confirm.svg';
 import cancel from '../images/cancel.svg';
-import { QrCode } from '@mui/icons-material';
+
+import { useQuery } from "@apollo/client";
+import { GET_DOCUMENT_BY_ID } from '../graphql/queries'
+import { useParams } from "react-router-dom"
+
+
+
 
 
 export default function Session() {
 
     const { user, logout } = useContext(AuthContext)
 
+    const { documentId } = useParams()
+
+    const { loading, error, data } = useQuery(GET_DOCUMENT_BY_ID, {
+        variables: { documentId: documentId },
+    });
+
     const [scratchPadShow, setScratchPadShow] = useState('scratchpad-collapsed')
 
     const [toolDrawerOpen, setToolDrawerOpen] = React.useState(true);
 
-    const [songTitle, setSongTitle] = React.useState('Untitled');
+    const [songTitle, setSongTitle] = React.useState();
     const [songTitleInput, setSongTitleInput] = React.useState(songTitle);
     const [songTitleStatus, setSongTitleStatus] = React.useState('read');
 
@@ -40,6 +52,7 @@ export default function Session() {
     const handleToolDrawerOpen = () => {
       toolDrawerOpen === false ? setToolDrawerOpen(true) : setToolDrawerOpen(false);
     };
+
 
 
     function toggleScratchPad() {
@@ -62,6 +75,13 @@ export default function Session() {
     useEffect(() => {
         setSongTitleInput(songTitle)
     }, [songTitle])
+
+ useEffect(()=> {
+    // console.log(data?.getDocumentById.title)
+    data && 
+    setSongTitle(data?.getDocumentById?.title)
+    setSongTitleInput(data?.getDocumentById?.title)
+ }, [data])
 
     return (
     <>
@@ -141,7 +161,7 @@ export default function Session() {
                         </button>
                         </>
                         )}
-                        <button type='button' onClick={()=> {console.log(songTitle)}}>LOG</button>
+                        <button type='button' onClick={()=> {console.log(data.getDocumentById.title)}}>LOG</button>
                     </div>
                         <TextEditor 
                             placeholder='WRITE A SONG'

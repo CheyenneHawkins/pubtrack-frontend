@@ -1,69 +1,59 @@
-import { Box, Typography, useTheme, colors } from "@mui/material";
-import MusicPlayer from "./MusicPlayer";
-import SessionFooterBar from "./SessionFooterBar";
-import '../styles/App.scss';
-import { useContext, useState } from "react";
-import { login } from "./Login";
-import { gql } from 'graphql-tag'
+import * as React from 'react';
 
+import { Box, Typography, useTheme, colors } from "@mui/material";
+
+import '../styles/App.scss';
+import { useContext, useEffect, useState } from "react";
+
+
+import SongsTable from './SongsTable'
+import { GET_USER_DOCS } from '../graphql/queries'
 import { AuthContext } from "../context/authContext";
 import { useQuery } from "@apollo/client";
 
-const GET_USER_DOCS = gql`
-    query GetDocumentsByOwner(
-        $owner: String
-        ) {
-            getDocumentsByOwner(
-                owner: $owner
-                ) {
-                    title
-                    }
-        }
-`
 
 
 export default function Dashboard(){
 
-    const { user, logout } = useContext(AuthContext)
+    const { user, login, logout } = useContext(AuthContext)
     const [userDocs, setUserDocs] = useState()
 
     function GetUserDocs(){
 
         const { loading, error, data } = useQuery(GET_USER_DOCS, {
-            variables: { owner: "cheyenne.hawkins@gmail.com" },
+            variables: { owner: user?.email },
           });
         
         if (loading) return <p>Loading...</p>;
-        if (error) return <p>Error :(</p>;
+        if (error) return <p>Error :</p>;
 
-        const docList = data.getDocumentsByOwner.map(doc => (
-            <li key={doc.title}>
-              {doc.title}
-            </li>
-          ))
-
-          
-          return (
-            data !== null &&
-            setUserDocs(docList)
-        );
+        if (data === null || data === userDocs) {
+            return
+        }
+        return setUserDocs(data.getDocumentsByOwner)
 
     }
 
-    // GetUserDocs()
 
+    
+    
+    // GetUserDocs()
+    
     const { loading, error, data } = useQuery(GET_USER_DOCS, {
         variables: { owner: user?.email },
-      });
+    });
     
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
-
+    
     const docList = data.getDocumentsByOwner.map(doc => (
-        <li key={doc.title}>
-          {doc.title}
-        </li>
-      ))
+        doc
+        // <li key={doc._id}>
+        //   <a href={`/session/${doc._id}`}>{doc.title}</a> 
+        // </li>
+        ))
+        
+    const songTable = <SongsTable tableHeaders={['Title', 'Writers', 'Status']} tableRows={docList}/>
     
     return (
         <>
@@ -74,34 +64,24 @@ export default function Dashboard(){
             // bgcolor={colors.grey[800]} 
         >
             <Box 
-                width='70%' 
+                width='100%' 
                 m='0px 0px 0px 0px' 
                 display='flex' 
                 justifyContent='center'
                 alignItems='center'
-                bgcolor={colors.grey[400]} 
+                // bgcolor={colors.grey[400]} 
             >
-            {user 
-                ? <h2> Hey {user.name}, you're email address is {user.email}!!</h2>
-                : <h2> You should login. </h2>}
-                <button onClick={()=> {console.log(user)}}>USER</button>
-            </Box>
-            {user ?
-                <ul>
-                    {docList}
-                </ul>
-                : "Maybe if you logged in, you'd see your songs!"
-            }
-
-            <Box 
-                width='30%' 
-                m='0px 0px 0px 0px' 
-                // bgcolor={colors.grey[900]}
-                display='flex' 
-                justifyContent='center'
-                alignItems='center'
-            >
-                <MusicPlayer />
+            <div className='dashboard-container'>
+                {user 
+                    ? <h2> Hey {user.name}, you're email address is {user.email}!!</h2>
+                    : <h2> You should login. </h2>}
+                    <button onClick={()=> {console.log(user)}}>USER</button>
+                    <button onClick={()=> {console.log(docList)}}>DOC LIST</button>
+                {user ?
+                    songTable
+                    : "Maybe if you logged in, you'd see your songs!"
+                }
+            </div>
             </Box>
         </Box>
         </>
